@@ -1,0 +1,129 @@
+2025-09-03 13:41:58,391 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.91.253.126:5001
+2025-09-03 13:41:58,391 INFO [33mPress CTRL+C to quit[0m
+2025-09-03 13:41:58,392 INFO  * Restarting with stat
+2025-09-03 13:42:01,175 WARNING  * Debugger is active!
+2025-09-03 13:42:01,186 INFO  * Debugger PIN: 471-826-382
+2025-09-03 13:45:38,416 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.91.253.126:5001
+2025-09-03 13:45:38,417 INFO [33mPress CTRL+C to quit[0m
+2025-09-03 13:45:38,418 INFO  * Restarting with stat
+2025-09-03 13:45:40,789 WARNING  * Debugger is active!
+2025-09-03 13:45:40,803 INFO  * Debugger PIN: 471-826-382
+2025-09-03 13:48:05,598 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.91.253.126:5001
+2025-09-03 13:48:05,599 INFO [33mPress CTRL+C to quit[0m
+2025-09-03 13:48:05,600 INFO  * Restarting with stat
+2025-09-03 13:48:08,147 WARNING  * Debugger is active!
+2025-09-03 13:48:08,163 INFO  * Debugger PIN: 471-826-382
+2025-09-03 13:52:40,866 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.91.253.126:5001
+2025-09-03 13:52:40,866 INFO [33mPress CTRL+C to quit[0m
+2025-09-03 13:52:40,867 INFO  * Restarting with stat
+2025-09-03 13:52:41,500 WARNING  * Debugger is active!
+2025-09-03 13:52:41,508 INFO  * Debugger PIN: 471-826-382
+2025-09-03 14:03:01,568 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.91.253.126:5001
+2025-09-03 14:03:01,568 INFO [33mPress CTRL+C to quit[0m
+2025-09-03 14:03:01,569 INFO  * Restarting with stat
+2025-09-03 14:03:02,200 WARNING  * Debugger is active!
+2025-09-03 14:03:02,208 INFO  * Debugger PIN: 471-826-382
+2025-09-03 14:11:13,010 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://10.91.253.126:5002
+2025-09-03 14:11:13,011 INFO [33mPress CTRL+C to quit[0m
+2025-09-03 14:11:13,011 INFO  * Restarting with stat
+2025-09-03 14:11:13,695 WARNING  * Debugger is active!
+2025-09-03 14:11:13,706 INFO  * Debugger PIN: 471-826-382
+2025-09-03 14:19:50,563 INFO 127.0.0.1 - - [03/Sep/2025 14:19:50] "GET /status HTTP/1.1" 200 -
+2025-09-03 14:21:31,594 INFO Received /path request payload: {'obstacles': [], 'retrying': False, 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0}
+2025-09-03 14:21:31,595 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:21:31,599 INFO Time taken to find shortest path: 0.004430055618286133 seconds
+2025-09-03 14:21:31,600 INFO Distance to travel: 0.0 units
+2025-09-03 14:21:31,601 INFO 127.0.0.1 - - [03/Sep/2025 14:21:31] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:27:30,457 INFO Received /path request payload: {'obstacles': [{'x': 9, 'y': 7, 'd': 4, 'id': 5}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:27:30,458 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:27:30,494 INFO Time taken to find shortest path: 0.03493499755859375 seconds
+2025-09-03 14:27:30,498 INFO Distance to travel: 36.0 units
+2025-09-03 14:27:30,501 INFO 127.0.0.1 - - [03/Sep/2025 14:27:30] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:27:56,630 INFO Received /path request payload: {'obstacles': [{'x': 9, 'y': 7, 'd': 4, 'id': 5}, {'x': 13, 'y': 12, 'd': 4, 'id': 8}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:27:56,630 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:27:56,690 INFO Time taken to find shortest path: 0.06003594398498535 seconds
+2025-09-03 14:27:56,690 INFO Distance to travel: 63.0 units
+2025-09-03 14:27:56,691 INFO 127.0.0.1 - - [03/Sep/2025 14:27:56] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:32:09,030 INFO Received /path request payload: {'obstacles': [{'x': 11, 'y': 12, 'd': 4, 'id': 8}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:32:09,033 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:32:09,094 INFO Time taken to find shortest path: 0.060305118560791016 seconds
+2025-09-03 14:32:09,095 INFO Distance to travel: 35.0 units
+2025-09-03 14:32:09,097 INFO 127.0.0.1 - - [03/Sep/2025 14:32:09] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:33:09,460 INFO Received /path request payload: {'obstacles': [{'x': 11, 'y': 12, 'd': 4, 'id': 8}, {'x': 5, 'y': 7, 'd': 4, 'id': 5}, {'x': 5, 'y': 7, 'd': 4, 'id': 6}, {'x': 5, 'y': 7, 'd': 4, 'id': 4}, {'x': 11, 'y': 14, 'd': 4, 'id': 9}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:33:09,463 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:33:10,831 INFO Time taken to find shortest path: 1.368053674697876 seconds
+2025-09-03 14:33:10,832 INFO Distance to travel: 63.0 units
+2025-09-03 14:33:10,834 INFO 127.0.0.1 - - [03/Sep/2025 14:33:10] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:43:24,425 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 5, 'd': 0, 'id': 1}, {'x': 10, 'y': 8, 'd': 1, 'id': 2}], 'retrying': False, 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0}
+2025-09-03 14:43:24,427 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:43:24,464 INFO Time taken to find shortest path: 0.03719687461853027 seconds
+2025-09-03 14:43:24,465 INFO Distance to travel: 36.0 units
+2025-09-03 14:43:24,467 INFO 127.0.0.1 - - [03/Sep/2025 14:43:24] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:50:29,138 INFO Received /path request payload: {'obstacles': [{'x': 12, 'y': 11, 'd': 4, 'id': 3}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:50:29,141 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:50:29,516 INFO Time taken to find shortest path: 0.3739888668060303 seconds
+2025-09-03 14:50:29,516 INFO Distance to travel: 35.0 units
+2025-09-03 14:50:29,529 INFO 127.0.0.1 - - [03/Sep/2025 14:50:29] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:52:51,527 INFO Received /path request payload: {'obstacles': [{'x': 12, 'y': 12, 'd': 4, 'id': 10}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:52:51,613 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:52:51,963 INFO Time taken to find shortest path: 0.3497202396392822 seconds
+2025-09-03 14:52:51,975 INFO Distance to travel: 36.0 units
+2025-09-03 14:52:51,982 INFO 127.0.0.1 - - [03/Sep/2025 14:52:51] "POST /path HTTP/1.1" 200 -
+2025-09-03 14:55:27,305 INFO Received /path request payload: {'obstacles': [{'x': 12, 'y': 12, 'd': 4, 'id': 6}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-03 14:55:27,326 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-03 14:55:27,575 INFO Time taken to find shortest path: 0.24364399909973145 seconds
+2025-09-03 14:55:27,576 INFO Distance to travel: 36.0 units
+2025-09-03 14:55:27,636 INFO 127.0.0.1 - - [03/Sep/2025 14:55:27] "POST /path HTTP/1.1" 200 -
+2025-09-25 18:45:43,665 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.31.73:5002
+2025-09-25 18:45:43,668 INFO [33mPress CTRL+C to quit[0m
+2025-09-25 18:45:43,671 INFO  * Restarting with stat
+2025-09-25 18:45:43,913 WARNING  * Debugger is active!
+2025-09-25 18:45:43,935 INFO  * Debugger PIN: 923-681-195
+2025-09-25 18:52:00,565 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.31.73:5002
+2025-09-25 18:52:00,567 INFO [33mPress CTRL+C to quit[0m
+2025-09-25 18:52:00,568 INFO  * Restarting with stat
+2025-09-25 18:52:02,733 WARNING  * Debugger is active!
+2025-09-25 18:52:02,839 INFO  * Debugger PIN: 923-681-195
+2025-09-25 18:52:49,853 INFO Received /path request payload: {'obstacles': [], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0}
+2025-09-25 18:52:49,854 WARNING Missing required fields: ['retrying']
+2025-09-25 18:52:49,868 INFO 127.0.0.1 - - [25/Sep/2025 18:52:49] "[31m[1mPOST /path HTTP/1.1[0m" 400 -
+2025-09-25 19:02:22,628 INFO 127.0.0.1 - - [25/Sep/2025 19:02:22] "[31m[1mGET /path HTTP/1.1[0m" 405 -
+2025-09-25 19:03:30,458 INFO Received /path request payload: {'obstacles': [], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-25 19:03:30,460 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-25 19:03:30,498 INFO Time taken to find shortest path: 0.02552318572998047 seconds
+2025-09-25 19:03:30,508 INFO Distance to travel: 0.0 units
+2025-09-25 19:03:30,519 INFO 127.0.0.1 - - [25/Sep/2025 19:03:30] "POST /path HTTP/1.1" 200 -
+2025-09-25 19:06:10,131 INFO Received /path request payload: {'obstacles': [{'x': 7, 'y': 6, 'd': 4, 'id': 8}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-25 19:06:10,132 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-25 19:06:10,180 INFO Time taken to find shortest path: 0.04654884338378906 seconds
+2025-09-25 19:06:10,180 INFO Distance to travel: 33.0 units
+2025-09-25 19:06:10,182 INFO 127.0.0.1 - - [25/Sep/2025 19:06:10] "POST /path HTTP/1.1" 200 -
+2025-09-25 19:19:39,726 INFO Received /path request payload: {'obstacles': [{'x': 10, 'y': 8, 'd': 4, 'id': 1}, {'x': 18, 'y': 15, 'd': 4, 'id': 7}, {'x': 2, 'y': 15, 'd': 4, 'id': 2}], 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-09-25 19:19:39,735 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-09-25 19:19:40,728 INFO Time taken to find shortest path: 0.9880411624908447 seconds
+2025-09-25 19:19:40,733 INFO Distance to travel: 101.0 units
+2025-09-25 19:19:40,734 INFO 127.0.0.1 - - [25/Sep/2025 19:19:40] "POST /path HTTP/1.1" 200 -
