@@ -13,3 +13,9 @@
 ./android/.externalNativeBuild
 ./android/.cxx
 ./android/local.properties
+
+# Log files
+*.log
+logfile.txt
+logs/
+*.log.*

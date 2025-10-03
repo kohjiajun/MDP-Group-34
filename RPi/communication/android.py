@@ -61,7 +61,7 @@ class AndroidLink(Link):
     - `image-rec`: image recognition results
     - `mode`: the current mode of the robot (`manual` or `path`)
     - `status`: status updates of the robot (`running` or `finished`)
-    - `obstacle`: list of obstacles 
+    - `obstacles`: list of obstacles 
 
     ## Android to RPi
 
@@ -131,10 +131,10 @@ class AndroidLink(Link):
 
             # Parameters
             port = self.server_sock.getsockname()[1]
-            uuid = '94f39d29-7d6d-437d-973b-fba39e49d4ee'
+            uuid = '00001101-0000-1000-8000-00805F9B34FB'
 
             # Advertise
-            bluetooth.advertise_service(self.server_sock, "MDP-Group2-RPi", service_id=uuid, service_classes=[
+            bluetooth.advertise_service(self.server_sock, "MDP-Group34-RPi", service_id=uuid, service_classes=[
                                         uuid, bluetooth.SERIAL_PORT_CLASS], profiles=[bluetooth.SERIAL_PORT_PROFILE])
 
             self.logger.info(

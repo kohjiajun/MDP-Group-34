@@ -6,6 +6,7 @@ from multiprocessing import Process, Manager
 from typing import Optional
 import os
 import requests
+
 from communication.android import AndroidLink, AndroidMessage
 from communication.stm32 import STMLink
 from consts import SYMBOL_MAP
