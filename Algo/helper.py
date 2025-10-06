@@ -55,7 +55,6 @@ def command_generator(states, obstacles):
                 commands.append("BW010")
 
             # If any of these states has a valid screenshot ID, then add a SNAP command as well to take a picture
-            '''
             if states[i].screenshot_id != -1:
                 # NORTH = 0
                 # EAST = 2
@@ -109,7 +108,6 @@ def command_generator(states, obstacles):
                     else:
                         commands.append(f"SNAP{states[i].screenshot_id}")
             continue
-            '''
 
         # If previous state and current state are not the same direction, it means that there will be a turn command involved
         # Assume there are 4 turning command: FR, FL, BL, BR (the turn command will turn the robot 90 degrees)
@@ -124,67 +122,66 @@ def command_generator(states, obstacles):
             if states[i].direction == Direction.EAST:
                 # y value increased -> Forward Right
                 if states[i].y > states[i - 1].y:
-                    commands.append("FR0{}".format(steps))
+                    commands.append("FR{}".format(steps))
                 # y value decreased -> Backward Left
                 else:
-                    commands.append("BL0{}".format(steps))
+                    commands.append("BL{}".format(steps))
             # Facing west afterwards
             elif states[i].direction == Direction.WEST:
                 # y value increased -> Forward Left
                 if states[i].y > states[i - 1].y:
-                    commands.append("FL0{}".format(steps))
+                    commands.append("FL{}".format(steps))
                 # y value decreased -> Backward Right
                 else:
-                    commands.append("BR0{}".format(steps))
+                    commands.append("BR{}".format(steps))
             else:
-                raise Exception("Invalid turing direction")
+                raise Exception("Invalid turning direction")
 
         elif states[i - 1].direction == Direction.EAST:
             if states[i].direction == Direction.NORTH:
                 if states[i].y > states[i - 1].y:
-                    commands.append("FL0{}".format(steps))
+                    commands.append("FL{}".format(steps))
                 else:
-                    commands.append("BR0{}".format(steps))
+                    commands.append("BR{}".format(steps))
 
             elif states[i].direction == Direction.SOUTH:
                 if states[i].y > states[i - 1].y:
-                    commands.append("BL0{}".format(steps))
+                    commands.append("BL{}".format(steps))
                 else:
-                    commands.append("FR0{}".format(steps))
+                    commands.append("FR{}".format(steps))
             else:
                 raise Exception("Invalid turing direction")
 
         elif states[i - 1].direction == Direction.SOUTH:
             if states[i].direction == Direction.EAST:
                 if states[i].y > states[i - 1].y:
-                    commands.append("BR0{}".format(steps))
+                    commands.append("BR{}".format(steps))
                 else:
-                    commands.append("FL0{}".format(steps))
+                    commands.append("FL{}".format(steps))
             elif states[i].direction == Direction.WEST:
                 if states[i].y > states[i - 1].y:
-                    commands.append("BL0{}".format(steps))
+                    commands.append("BL{}".format(steps))
                 else:
-                    commands.append("FR0{}".format(steps))
+                    commands.append("FR{}".format(steps))
             else:
                 raise Exception("Invalid turing direction")
 
         elif states[i - 1].direction == Direction.WEST:
             if states[i].direction == Direction.NORTH:
                 if states[i].y > states[i - 1].y:
-                    commands.append("FR0{}".format(steps))
+                    commands.append("FR{}".format(steps))
                 else:
-                    commands.append("BL0{}".format(steps))
+                    commands.append("BL{}".format(steps))
             elif states[i].direction == Direction.SOUTH:
                 if states[i].y > states[i - 1].y:
-                    commands.append("BR0{}".format(steps))
+                    commands.append("BR{}".format(steps))
                 else:
-                    commands.append("FL0{}".format(steps))
+                    commands.append("FL{}".format(steps))
             else:
                 raise Exception("Invalid turing direction")
         else:
             raise Exception("Invalid position")
 
-        '''
         # If any of these states has a valid screenshot ID, then add a SNAP command as well to take a picture
         if states[i].screenshot_id != -1:  
             # NORTH = 0
@@ -238,7 +235,6 @@ def command_generator(states, obstacles):
                     commands.append(f"SNAP{states[i].screenshot_id}_L")
                 else:
                     commands.append(f"SNAP{states[i].screenshot_id}")
-        '''
 
     # Final command is the stop command (FIN)
     commands.append("FIN")  
