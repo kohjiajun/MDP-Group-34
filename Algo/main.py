@@ -138,6 +138,7 @@ def path_finding():
         # Generate commands
         try:
             commands = command_generator(optimal_path, obstacles)
+            print("Generated commands:", commands)
         except Exception as e:
             logger.exception("Command generation failed: %s", e)
             return jsonify({
