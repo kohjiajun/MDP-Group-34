@@ -127,3 +127,115 @@
 2025-09-25 19:19:40,728 INFO Time taken to find shortest path: 0.9880411624908447 seconds
 2025-09-25 19:19:40,733 INFO Distance to travel: 101.0 units
 2025-09-25 19:19:40,734 INFO 127.0.0.1 - - [25/Sep/2025 19:19:40] "POST /path HTTP/1.1" 200 -
+2025-10-06 19:32:19,553 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.34.29:5002
+2025-10-06 19:32:19,553 INFO [33mPress CTRL+C to quit[0m
+2025-10-06 19:32:19,554 INFO  * Restarting with stat
+2025-10-06 19:32:20,472 WARNING  * Debugger is active!
+2025-10-06 19:32:20,493 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:44:38,061 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-06 19:44:38,314 INFO  * Restarting with stat
+2025-10-06 19:44:39,231 WARNING  * Debugger is active!
+2025-10-06 19:44:39,250 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:44:40,005 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5003
+ * Running on http://192.168.34.29:5003
+2025-10-06 19:44:40,005 INFO [33mPress CTRL+C to quit[0m
+2025-10-06 19:44:40,005 INFO  * Restarting with stat
+2025-10-06 19:44:40,711 WARNING  * Debugger is active!
+2025-10-06 19:44:40,733 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:52:21,678 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-06 19:52:21,680 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-06 19:52:22,049 INFO  * Restarting with stat
+2025-10-06 19:52:22,054 INFO  * Restarting with stat
+2025-10-06 19:52:23,100 WARNING  * Debugger is active!
+2025-10-06 19:52:23,100 WARNING  * Debugger is active!
+2025-10-06 19:52:23,134 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:52:23,134 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:52:39,621 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-06 19:52:39,623 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-06 19:52:39,895 INFO  * Restarting with stat
+2025-10-06 19:52:39,895 INFO  * Restarting with stat
+2025-10-06 19:52:40,882 WARNING  * Debugger is active!
+2025-10-06 19:52:40,882 WARNING  * Debugger is active!
+2025-10-06 19:52:40,904 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:52:40,904 INFO  * Debugger PIN: 210-633-293
+2025-10-06 19:54:56,273 INFO Received /path request payload: {'obstacles': [{'x': 6, 'y': 13, 'id': 2, 'd': 6}, {'x': 2, 'y': 7, 'id': 1, 'd': 4}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 19:54:56,274 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 19:54:56,466 INFO Time taken to find shortest path: 0.191436767578125 seconds
+2025-10-06 19:54:56,466 INFO Distance to travel: 98.0 units
+2025-10-06 19:54:56,466 INFO 192.168.34.1 - - [06/Oct/2025 19:54:56] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:06:00,690 INFO Received /path request payload: {'obstacles': [{'x': 6, 'y': 13, 'id': 2, 'd': 6}, {'x': 6, 'y': 7, 'id': 1, 'd': 4}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:06:00,691 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:06:00,758 INFO Time taken to find shortest path: 0.06676578521728516 seconds
+2025-10-06 20:06:00,758 INFO Distance to travel: 80.0 units
+2025-10-06 20:06:00,759 INFO 192.168.34.1 - - [06/Oct/2025 20:06:00] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:07:07,799 INFO Received /path request payload: {'obstacles': [{'x': 6, 'y': 13, 'id': 2, 'd': 6}, {'x': 6, 'y': 7, 'id': 1, 'd': 4}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:07:07,801 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:07:07,872 INFO Time taken to find shortest path: 0.07113003730773926 seconds
+2025-10-06 20:07:07,872 INFO Distance to travel: 80.0 units
+2025-10-06 20:07:07,872 INFO 192.168.34.1 - - [06/Oct/2025 20:07:07] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:14:35,489 INFO Received /path request payload: {'obstacles': [{'x': 6, 'y': 13, 'id': 2, 'd': 6}, {'x': 6, 'y': 7, 'id': 1, 'd': 4}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:14:35,491 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:14:35,567 INFO Time taken to find shortest path: 0.07543134689331055 seconds
+2025-10-06 20:14:35,567 INFO Distance to travel: 80.0 units
+2025-10-06 20:14:35,568 INFO 192.168.34.1 - - [06/Oct/2025 20:14:35] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:19:59,847 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 2, 'd': 4}, {'x': 5, 'y': 13, 'id': 1, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:19:59,848 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:19:59,920 INFO Time taken to find shortest path: 0.07140398025512695 seconds
+2025-10-06 20:19:59,920 INFO Distance to travel: 79.0 units
+2025-10-06 20:19:59,921 INFO 192.168.34.1 - - [06/Oct/2025 20:19:59] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:33:24,591 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 2, 'd': 4}, {'x': 5, 'y': 13, 'id': 1, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:33:24,592 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:33:24,662 INFO Time taken to find shortest path: 0.07004785537719727 seconds
+2025-10-06 20:33:24,662 INFO Distance to travel: 79.0 units
+2025-10-06 20:33:24,662 INFO 192.168.34.1 - - [06/Oct/2025 20:33:24] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:41:49,997 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 2, 'd': 4}, {'x': 5, 'y': 13, 'id': 1, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:41:49,998 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:41:50,069 INFO Time taken to find shortest path: 0.07077193260192871 seconds
+2025-10-06 20:41:50,069 INFO Distance to travel: 79.0 units
+2025-10-06 20:41:50,069 INFO 192.168.34.1 - - [06/Oct/2025 20:41:50] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:44:06,475 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 2, 'd': 4}, {'x': 5, 'y': 13, 'id': 1, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:44:06,476 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:44:06,555 INFO Time taken to find shortest path: 0.07816815376281738 seconds
+2025-10-06 20:44:06,555 INFO Distance to travel: 79.0 units
+2025-10-06 20:44:06,555 INFO 192.168.34.1 - - [06/Oct/2025 20:44:06] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:45:54,010 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 1, 'd': 4}, {'x': 5, 'y': 13, 'id': 2, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:45:54,011 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:45:54,077 INFO Time taken to find shortest path: 0.06578302383422852 seconds
+2025-10-06 20:45:54,077 INFO Distance to travel: 79.0 units
+2025-10-06 20:45:54,077 INFO 192.168.34.1 - - [06/Oct/2025 20:45:54] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:47:30,510 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 1, 'd': 4}, {'x': 5, 'y': 13, 'id': 2, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:47:30,512 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:47:30,590 INFO Time taken to find shortest path: 0.07856082916259766 seconds
+2025-10-06 20:47:30,590 INFO Distance to travel: 79.0 units
+2025-10-06 20:47:30,591 INFO 192.168.34.1 - - [06/Oct/2025 20:47:30] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:52:58,014 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 1, 'd': 4}, {'x': 5, 'y': 13, 'id': 2, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:52:58,015 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:52:58,088 INFO Time taken to find shortest path: 0.07263302803039551 seconds
+2025-10-06 20:52:58,088 INFO Distance to travel: 79.0 units
+2025-10-06 20:52:58,088 INFO 192.168.34.1 - - [06/Oct/2025 20:52:58] "POST /path HTTP/1.1" 200 -
+2025-10-06 20:55:33,606 INFO Received /path request payload: {'obstacles': [{'x': 5, 'y': 7, 'id': 1, 'd': 4}, {'x': 5, 'y': 13, 'id': 2, 'd': 6}], 'mode': '0', 'big_turn': '0', 'robot_x': 1, 'robot_y': 1, 'robot_dir': 0, 'retrying': False}
+2025-10-06 20:55:33,608 INFO Initializing MazeSolver at x=1 y=1 dir=0
+2025-10-06 20:55:33,686 INFO Time taken to find shortest path: 0.07725381851196289 seconds
+2025-10-06 20:55:33,686 INFO Distance to travel: 79.0 units
+2025-10-06 20:55:33,686 INFO 192.168.34.1 - - [06/Oct/2025 20:55:33] "POST /path HTTP/1.1" 200 -
+2025-10-07 12:16:24,127 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-07 12:16:24,133 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-07 12:16:24,392 INFO  * Restarting with stat
+2025-10-07 12:16:24,394 INFO  * Restarting with stat
+2025-10-07 12:16:25,426 WARNING  * Debugger is active!
+2025-10-07 12:16:25,430 WARNING  * Debugger is active!
+2025-10-07 12:16:25,448 INFO  * Debugger PIN: 210-633-293
+2025-10-07 12:16:25,448 INFO  * Debugger PIN: 210-633-293
+2025-10-07 12:16:29,598 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-07 12:16:29,599 INFO  * Detected change in '/Users/dingjiang/SC2079 FR/MDP-Group-34-1/Algo/main.py', reloading
+2025-10-07 12:16:29,825 INFO  * Restarting with stat
+2025-10-07 12:16:29,836 INFO  * Restarting with stat
+2025-10-07 12:16:30,637 WARNING  * Debugger is active!
+2025-10-07 12:16:30,643 WARNING  * Debugger is active!
+2025-10-07 12:16:30,656 INFO  * Debugger PIN: 210-633-293
+2025-10-07 12:16:30,665 INFO  * Debugger PIN: 210-633-293
