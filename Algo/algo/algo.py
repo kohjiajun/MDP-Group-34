@@ -9,37 +9,28 @@ from python_tsp.exact import solve_tsp_dynamic_programming
 
 TURN_OFFSET_TABLES = {
     "forward_right": [
-        (0.5 * TURN_RADIUS, 0.5 * TURN_RADIUS),
-        (4 * TURN_RADIUS, 2 * TURN_RADIUS),
+        (0 * TURN_RADIUS, 2 * TURN_RADIUS),
+        (0 * TURN_RADIUS, 2 * TURN_RADIUS),
     ],
     "forward_left": [
-        (0.4 * TURN_RADIUS, 0.25 * TURN_RADIUS),
-        (4 * TURN_RADIUS, 2 * TURN_RADIUS),
-    ],
-    "backward_right": [
-        (2 * TURN_RADIUS, 3 * TURN_RADIUS),
-        (2 * TURN_RADIUS, 4 * TURN_RADIUS),
-    ],
-    "backward_left": [
-        (3 * TURN_RADIUS, 2 * TURN_RADIUS),
-        (4 * TURN_RADIUS, 2 * TURN_RADIUS),
+        (1 * TURN_RADIUS, 0 * TURN_RADIUS),
+        (1 * TURN_RADIUS, 0 * TURN_RADIUS),
     ],
 }
 
 FORWARD_VECTORS = {
-    Direction.NORTH: (0, 1),
-    Direction.EAST: (1, 0),
-    Direction.SOUTH: (0, -1),
-    Direction.WEST: (-1, 0),
+    Direction.NORTH: (1, 0),   # +x
+    Direction.EAST: (0, -1),   # -y
+    Direction.SOUTH: (-1, 0),  # -x
+    Direction.WEST: (0, 1),    # +y
 }
 
 RIGHT_VECTORS = {
-    Direction.NORTH: (1, 0),
-    Direction.EAST: (0, -1),
-    Direction.SOUTH: (-1, 0),
-    Direction.WEST: (0, 1),
+    Direction.NORTH: (0, 1),   # +y
+    Direction.EAST: (1, 0),    # +x
+    Direction.SOUTH: (0, -1),  # -y
+    Direction.WEST: (-1, 0),   # -x
 }
-
 
 class MazeSolver:
     def __init__(
@@ -240,18 +231,6 @@ class MazeSolver:
             MazeSolver.generate_combination(view_positions, index + 1, current, result, iteration_left)
             current.pop()
 
-    @staticmethod
-    def _turn_components(turn_type: str, major: int, minor: int):
-        if turn_type == "forward_right":
-            return minor, major
-        if turn_type == "backward_right":
-            return -major, -minor
-        if turn_type == "forward_left":
-            return minor, -major
-        if turn_type == "backward_left":
-            return -major, minor
-        raise ValueError(f"Unsupported turn type: {turn_type}")
-
     def get_safe_cost(self, x, y):
         """Get the safe cost of a particular x,y coordinate wrt obstacles that are exactly 2 units away from it in both x and y directions
 
@@ -297,10 +276,14 @@ class MazeSolver:
                     safe_cost = self.get_safe_cost(x + dx, y + dy)
                     neighbors.append((x + dx, y + dy, md, safe_cost))
                 # Check for valid position
+
+                # Removing backwards movement
+                '''
                 if self.grid.reachable(x - dx, y - dy):  # go back;
                     # Get safe cost of destination
                     safe_cost = self.get_safe_cost(x - dx, y - dy)
                     neighbors.append((x - dx, y - dy, md, safe_cost))
+                '''
 
             else:  # consider 8 cases
 
@@ -308,13 +291,12 @@ class MazeSolver:
                 if turn_delta not in (2, 6):
                     continue
 
-                turn_sequence = ("forward_right", "backward_right") if turn_delta == 2 else ("forward_left", "backward_left")
+                turn_sequence = ["forward_right"] if turn_delta == 2 else ["forward_left"]
                 forward_axis = FORWARD_VECTORS[direction]
                 right_axis = RIGHT_VECTORS[direction]
 
                 for turn_type in turn_sequence:
-                    major, minor = self.turn_offsets[turn_type]
-                    forward_component, lateral_component = self._turn_components(turn_type, major, minor)
+                    forward_component, lateral_component = self.turn_offsets[turn_type]
 
                     dx_offset = forward_component * forward_axis[0] + lateral_component * right_axis[0]
                     dy_offset = forward_component * forward_axis[1] + lateral_component * right_axis[1]
@@ -329,6 +311,7 @@ class MazeSolver:
                     if self.grid.reachable(next_x, next_y, turn=True) and self.grid.reachable(x, y, preTurn=True):
                         safe_cost = self.get_safe_cost(next_x, next_y)
                         neighbors.append((next_x, next_y, md, safe_cost + 10))
+
 
         return neighbors
 
