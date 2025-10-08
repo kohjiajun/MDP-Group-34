@@ -12,10 +12,12 @@ from ultralytics import YOLO
 import time
 import threading
 import asyncio
+from PIL import Image
+import shutil
 
 # ============ CONFIG ============
 WEIGHTS = "best_roboflow_image_bg.pt"
-CONF_THRESH = 0.25    # detection confidence threshold
+CONF_THRESH = 0.20    # detection confidence threshold
 IMG_SIZE = 640        # YOLO inference imgsz (keeps perf reasonable)
 MAX_DETECTIONS = 50
 CLASSNAME_TO_IMAGEID = {
@@ -46,10 +48,11 @@ _frame_lock = threading.Lock()
 
 def read_imagefile_to_cv2(file_bytes: bytes):
     arr = np.frombuffer(file_bytes, dtype=np.uint8)
-    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    gray = cv2.imdecode(arr, cv2.IMREAD_GRAYSCALE)
+    img = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
     return img
 
-def annotate_image(img: np.ndarray, detections: List[Dict[str, Any]]) -> np.ndarray:
+def annotate_image(img: np.ndarray, detections: List[Dict[str, Any]], obstacle_id: str = None) -> np.ndarray:
     """Draw boxes + labels on image (in-place copy) and return annotated image."""
     out = img.copy()
     h, w = out.shape[:2]
@@ -61,7 +64,13 @@ def annotate_image(img: np.ndarray, detections: List[Dict[str, Any]]) -> np.ndar
         color = tuple(int((hash(cls) >> (8*i)) & 255) for i in range(3))
         # cv2 uses BGR; color tuple is (B,G,R)
         cv2.rectangle(out, (x1, y1), (x2, y2), color, 2)
-        label = f"{cls} {conf:.2f}"
+        
+        # Include obstacle_id in label if provided
+        if obstacle_id:
+            label = f"ID:{obstacle_id} {cls} {conf:.2f}"
+        else:
+            label = f"{cls} {conf:.2f}"
+        
         # put label background
         (text_w, text_h), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
         cv2.rectangle(out, (x1, y1 - text_h - baseline - 4), (x1 + text_w + 6, y1), color, -1)
@@ -98,6 +107,86 @@ def predict_image_from_array(img: np.ndarray) -> tuple[str, List[Dict[str, Any]]
     
     return image_id, detections
 
+def stitch_image():
+    """
+    Stitches all the images captured during the robot run and saves it to the uploads/stitched folder.
+    Images are sorted by obstacle_id extracted from filename format: <timestamp>_<obstacle_id>_<signal>.jpg
+    Returns the path to the stitched image.
+    """
+
+    try:
+        # Create directories if they don't exist
+        uploads_folder = 'uploads'
+        stitched_folder = os.path.join(uploads_folder, 'stitched')
+        originals_folder = os.path.join(uploads_folder, 'originals')
+        os.makedirs(stitched_folder, exist_ok=True)
+        os.makedirs(originals_folder, exist_ok=True)
+
+        # Get all .jpg files from uploads directory
+        all_files = os.listdir(uploads_folder)
+        img_files = [f for f in all_files if f.endswith('.jpg')]
+        
+        if not img_files:
+            print("No images found to stitch")
+            return None
+        
+        # Sort images by obstacle_id (extracted from filename)
+        def extract_obstacle_id(filename):
+            try:
+                # Format: <timestamp>_<obstacle_id>_<signal>.jpg
+                parts = filename.split('_')
+                if len(parts) >= 2:
+                    return int(parts[1])  # obstacle_id
+                return 0
+            except:
+                return 0
+        
+        img_files.sort(key=extract_obstacle_id)
+        
+        # Create full paths for images
+        img_paths = [os.path.join(uploads_folder, f) for f in img_files]
+        
+        print(f"Found {len(img_paths)} images to stitch")
+        
+        # Open all images
+        images = [Image.open(x) for x in img_paths]
+        
+        # Get the width and height of each image
+        widths, heights = zip(*(i.size for i in images))
+        
+        # Calculate the total width and max height (stitching horizontally)
+        total_width = sum(widths)
+        max_height = max(heights)
+        
+        # Create a new blank image with the calculated dimensions
+        stitched_img = Image.new('RGB', (total_width, max_height))
+        
+        # Paste images horizontally
+        x_offset = 0
+        for im in images:
+            stitched_img.paste(im, (x_offset, 0))
+            x_offset += im.size[0]
+        
+        # Save the stitched image with timestamp
+        stitched_filename = f'stitched-{int(time.time())}.jpg'
+        stitched_path = os.path.join(stitched_folder, stitched_filename)
+        stitched_img.save(stitched_path, quality=95)
+        
+        print(f"Stitched image saved to: {stitched_path}")
+        
+        # Move original images to originals subdirectory
+        for img_path in img_paths:
+            dest_path = os.path.join(originals_folder, os.path.basename(img_path))
+            shutil.move(img_path, dest_path)
+        
+        print(f"Moved {len(img_paths)} original images to {originals_folder}")
+        
+        return stitched_path
+    
+    except Exception as e:
+        print(f"Error in stitch_image: {e}")
+        return None
+
 @app.post("/snap_image")
 async def snap_image(file: UploadFile = File(...)):
     """
@@ -124,8 +213,8 @@ async def snap_image(file: UploadFile = File(...)):
     # Predict using the numpy array and get detections (unpack the tuple correctly)
     image_id, detections = predict_image_from_array(img)
     
-    # Annotate the image with bounding boxes and labels
-    annotated_img = annotate_image(img, detections)
+    # Annotate the image with bounding boxes and labels (including obstacle_id)
+    annotated_img = annotate_image(img, detections, obstacle_id=obstacle_id)
     
     # Save the annotated image
     file_path = os.path.join('uploads', filename)
@@ -147,7 +236,28 @@ def status():
 
 @app.get("/stitch")
 def stitch():
-    return JSONResponse({"status": "stitch_received"})
+    """
+    Endpoint to trigger image stitching of all captured images from the current robot run.
+    """
+    try:
+        stitched_path = stitch_image()
+        
+        if stitched_path:
+            return JSONResponse({
+                "status": "success",
+                "message": "Images stitched successfully",
+                "stitched_image_path": stitched_path
+            })
+        else:
+            return JSONResponse({
+                "status": "no_images",
+                "message": "No images found to stitch"
+            })
+    except Exception as e:
+        return JSONResponse({
+            "status": "error",
+            "message": f"Error stitching images: {str(e)}"
+        }, status_code=500)
 
 @app.post("/image")
 async def predict_image(file: UploadFile = File(...)):
@@ -199,7 +309,7 @@ async def predict_image(file: UploadFile = File(...)):
     _latest_detections = detections
 
     # Annotate and encode latest frame to JPEG for viewer
-    annotated = annotate_image(img, detections)
+    annotated = annotate_image(img, detections, obstacle_id=1)
     success, jpeg = cv2.imencode('.jpg', annotated, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
     if success:
         with _frame_lock:
@@ -304,4 +414,4 @@ def view_page():
 
 
 if __name__ == "__main__":
-    uvicorn.run("image_api:app", host="0.0.0.0", port=5000, log_level="info", reload=True)
+    uvicorn.run("image_api:app", host="0.0.0.0", port=5003, log_level="info", reload=True)
