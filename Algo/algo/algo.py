@@ -8,13 +8,13 @@ from consts import Direction, MOVE_DIRECTION, TURN_FACTOR, ITERATIONS, TURN_RADI
 from python_tsp.exact import solve_tsp_dynamic_programming
 
 TURN_OFFSET_TABLES = {
+
+    # Change offset values accordingly (rounded to nearest 10)
     "forward_right": [
-        (0 * TURN_RADIUS, 2 * TURN_RADIUS),
-        (0 * TURN_RADIUS, 2 * TURN_RADIUS),
+        (2 * TURN_RADIUS, 0 * TURN_RADIUS),
     ],
     "forward_left": [
-        (1 * TURN_RADIUS, 0 * TURN_RADIUS),
-        (1 * TURN_RADIUS, 0 * TURN_RADIUS),
+        (-1 * TURN_RADIUS, 0 * TURN_RADIUS),
     ],
 }
 
@@ -40,7 +40,7 @@ class MazeSolver:
             robot_x: int,
             robot_y: int,
             robot_direction: Direction,
-            big_turn=None # the big_turn here is to allow 3-1 turn(0 - by default) | 4-2 turn(1)
+            big_turn=0 # the big_turn here is to allow 3-1 turn(0 - by default) | 4-2 turn(1)
     ):
         # Initialize a Grid object for the arena representation
         self.grid = Grid(size_x, size_y)
@@ -49,10 +49,7 @@ class MazeSolver:
         # Create tables for paths and costs
         self.path_table = dict()
         self.cost_table = dict()
-        if big_turn is None:
-            self.big_turn = 0
-        else:
-            self.big_turn = int(big_turn)
+        self.big_turn = 0
         self.turn_offsets = {
             key: TURN_OFFSET_TABLES[key][self.big_turn] for key in TURN_OFFSET_TABLES
         }
@@ -253,6 +250,21 @@ class MazeSolver:
 
         return 0
 
+    def get_safe_turn_cost(self, x, y):
+        """Get the safe cost of a particular x,y coordinate wrt obstacles that are exactly 2 units away from it in both x and y directions
+
+        Args:
+            x (int): x-coordinate
+            y (int): y-coordinate
+
+        Returns:
+            int: safe cost
+        """
+        for ob in self.grid.obstacles:
+            if abs(ob.x-x) <= 3 and abs(ob.y-y) <= 3:
+                return SAFE_COST
+        return 0
+
     def get_neighbors(self, x, y, direction):  # TODO: see the behavior of the robot and adjust...
         """
         Return a list of tuples with format:
@@ -309,7 +321,7 @@ class MazeSolver:
                     next_y = y + dy_offset
 
                     if self.grid.reachable(next_x, next_y, turn=True) and self.grid.reachable(x, y, preTurn=True):
-                        safe_cost = self.get_safe_cost(next_x, next_y)
+                        safe_cost = self.get_safe_turn_cost(x, y)
                         neighbors.append((next_x, next_y, md, safe_cost + 10))
 
 

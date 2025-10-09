@@ -1,4 +1,4 @@
-from consts import WIDTH, HEIGHT, Direction
+from consts import WIDTH, HEIGHT, Direction, FL_OFFSET, FR_OFFSET
 
 
 def is_valid(center_x: int, center_y: int):
@@ -149,7 +149,6 @@ def command_generator(states, obstacles):
                 '''
 
                 commands.append("FL{}".format(steps))
-                commands.append("BW004")
             else:
                 raise Exception("Invalid turning direction")
 
@@ -165,7 +164,6 @@ def command_generator(states, obstacles):
                 '''
 
                 commands.append("FL{}".format(steps))
-                commands.append("BW004")
 
             elif states[i].direction == Direction.SOUTH:
 
@@ -193,7 +191,6 @@ def command_generator(states, obstacles):
                 '''
 
                 commands.append("FL{}".format(steps))
-                commands.append("BW004")
 
             elif states[i].direction == Direction.WEST:
 
@@ -232,7 +229,6 @@ def command_generator(states, obstacles):
                     commands.append("FL{}".format(steps))
                 '''
                 commands.append("FL{}".format(steps))
-                commands.append("BW004")
                 
             else:
                 raise Exception("Invalid turing direction")
@@ -325,8 +321,129 @@ def command_generator(states, obstacles):
             else:
                 compressed_commands[-1] = "FW{}".format(steps + 10)
                 continue
+    
+        
+        # If command is forward left
+        elif commands[i].startswith("FL"):
+            # remove/add y offset to the previous command
+            if FL_OFFSET[1] > 0:
+                compressed_commands.append("BW00{}".format(FL_OFFSET[1]))
+
+            # add turn command
+            compressed_commands.append(commands[i])
+
+            # remove/add x offset after the turn
+            if 10 - FL_OFFSET[0] < 10:
+                compressed_commands.append("BW00{}".format(10 - FL_OFFSET[0]))
+            else:
+                compressed_commands.append("BW0{}".format(10 - FL_OFFSET[0]))
+
+            continue
+
+            
+        # If command is forward left
+        elif commands[i].startswith("FR"):
+            # remove/add y offset to the previous command
+            if FR_OFFSET[1] > 0:
+                compressed_commands.append("BW00{}".format(FR_OFFSET[1]))
+
+            # add turn command
+            compressed_commands.append(commands[i])
+
+            # remove/add x offset after the turn
+            if 10 - FR_OFFSET[0] < 10:
+                compressed_commands.append("FW00{}".format(10 - FR_OFFSET[0]))
+            else:
+                compressed_commands.append("FW0{}".format(10 - FR_OFFSET[0]))
+
+            continue
 
         # Otherwise, just add as usual
         compressed_commands.append(commands[i])
 
-    return compressed_commands
+    print(f"Compressed commands: {compressed_commands}")
+    # Merge consecutive FW and BW commands
+    merge_commands = [compressed_commands[0]]
+
+    for i in range (1, len(compressed_commands)):
+        # If previous command is BW and current command is FW
+        if compressed_commands[i].startswith("FW") and merge_commands[-1].startswith("BW"):
+            # Get the number of steps of previous command and current command
+            prev_steps = int(merge_commands[-1][2:])
+            curr_steps = int(compressed_commands[i][2:])
+
+            # if BW > FW distance
+            if prev_steps > curr_steps:
+                if prev_steps - curr_steps < 10:
+                    merge_commands[-1] = "BW00{}".format(prev_steps - curr_steps)
+                elif prev_steps - curr_steps < 100:
+                    merge_commands[-1] = "BW0{}".format(prev_steps - curr_steps)
+                else:
+                    merge_commands[-1] = "BW{}".format(prev_steps - curr_steps)
+            # if FW > BW distance
+            elif curr_steps > prev_steps:
+                if curr_steps - prev_steps < 10:
+                    merge_commands[-1] = "FW00{}".format(curr_steps - prev_steps)
+                elif curr_steps - prev_steps < 100:
+                    merge_commands[-1] = "FW0{}".format(curr_steps - prev_steps)
+                else:
+                    merge_commands[-1] = "FW{}".format(curr_steps - prev_steps)
+            
+            else:
+                merge_commands.pop()
+
+        # If previous command is BW and current command is FW
+        elif compressed_commands[i].startswith("BW") and merge_commands[-1].startswith("FW"):
+            # Get the number of steps of previous command and current command
+            prev_steps = int(merge_commands[-1][2:])
+            curr_steps = int(compressed_commands[i][2:])
+
+            # if FW > BW distance
+            if prev_steps > curr_steps:
+                if prev_steps - curr_steps < 10:
+                    merge_commands[-1] = "FW00{}".format(prev_steps - curr_steps)
+                elif prev_steps - curr_steps < 100:
+                    merge_commands[-1] = "FW0{}".format(prev_steps - curr_steps)
+                else:
+                    merge_commands[-1] = "FW{}".format(prev_steps - curr_steps)
+            # if BW > FW distance
+            elif curr_steps > prev_steps:
+                if curr_steps - prev_steps < 10:
+                    merge_commands[-1] = "BW00{}".format(curr_steps - prev_steps)
+                elif curr_steps - prev_steps < 100:
+                    merge_commands[-1] = "BW0{}".format(curr_steps - prev_steps)
+                else:
+                    merge_commands[-1] = "BW{}".format(curr_steps - prev_steps)
+            
+            else:
+                merge_commands.pop()
+
+        # If previous command is BW and current command is BW
+        elif compressed_commands[i].startswith("BW") and merge_commands[-1].startswith("BW"):
+            # Get the number of steps of previous command and current command
+            prev_steps = int(merge_commands[-1][2:])
+            curr_steps = int(compressed_commands[i][2:])
+            if prev_steps + curr_steps < 10:
+                merge_commands[-1] = "BW00{}".format(prev_steps + curr_steps)
+            elif prev_steps + curr_steps < 100:
+                merge_commands[-1] = "BW0{}".format(prev_steps + curr_steps)
+            else:
+                merge_commands[-1] = "BW{}".format(prev_steps + curr_steps)
+
+        # If previous command is FW and current command is FW
+        elif compressed_commands[i].startswith("FW") and merge_commands[-1].startswith("FW"):
+            # Get the number of steps of previous command and current command
+            prev_steps = int(merge_commands[-1][2:])
+            curr_steps = int(compressed_commands[i][2:])
+            if prev_steps + curr_steps < 10:
+                merge_commands[-1] = "FW00{}".format(prev_steps + curr_steps)
+            elif prev_steps + curr_steps < 100:
+                merge_commands[-1] = "FW0{}".format(prev_steps + curr_steps)
+            else:
+                merge_commands[-1] = "FW{}".format(prev_steps + curr_steps)
+
+        # Otherwise, just add as usual
+        else:
+            merge_commands.append(compressed_commands[i])
+
+    return merge_commands
