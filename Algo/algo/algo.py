@@ -11,10 +11,12 @@ TURN_OFFSET_TABLES = {
 
     # Change offset values accordingly (rounded to nearest 10)
     "forward_right": [
-        (2 * TURN_RADIUS, 0 * TURN_RADIUS),
+        # (1 * TURN_RADIUS, 1 * TURN_RADIUS),
+        (4 * TURN_RADIUS, 2 * TURN_RADIUS),
     ],
     "forward_left": [
-        (-1 * TURN_RADIUS, 0 * TURN_RADIUS),
+        # (1 * TURN_RADIUS, 0 * TURN_RADIUS),
+        (-3 * TURN_RADIUS, 1 * TURN_RADIUS),
     ],
 }
 
@@ -290,41 +292,70 @@ class MazeSolver:
                 # Check for valid position
 
                 # Removing backwards movement
-                '''
+                
                 if self.grid.reachable(x - dx, y - dy):  # go back;
                     # Get safe cost of destination
                     safe_cost = self.get_safe_cost(x - dx, y - dy)
                     neighbors.append((x - dx, y - dy, md, safe_cost))
-                '''
+                
 
             else:  # consider 8 cases
+                new_x = 0
+                new_y = 0
+                # north <-> east
+                if direction == Direction.NORTH and md == Direction.EAST:
+                    x_change, y_change = self.turn_offsets["forward_right"]
+                    new_x = x + x_change
+                    new_y = y + y_change
 
-                turn_delta = (int(md) - int(direction)) % 8
-                if turn_delta not in (2, 6):
-                    continue
+                
+                if direction == Direction.EAST and md == Direction.NORTH:
+                    x_change, y_change = self.turn_offsets["forward_left"]
+                    new_x = x + y_change
+                    new_y = y - x_change
+                
 
-                turn_sequence = ["forward_right"] if turn_delta == 2 else ["forward_left"]
-                forward_axis = FORWARD_VECTORS[direction]
-                right_axis = RIGHT_VECTORS[direction]
+                # east <-> south
+                if direction == Direction.EAST and md == Direction.SOUTH:
+                    x_change, y_change = self.turn_offsets["forward_right"]
+                    new_x = x + y_change
+                    new_y = y - x_change
 
-                for turn_type in turn_sequence:
-                    forward_component, lateral_component = self.turn_offsets[turn_type]
+                
+                if direction == Direction.SOUTH and md == Direction.EAST:
+                    x_change, y_change = self.turn_offsets["forward_left"]
+                    new_x = x - x_change
+                    new_y = y - y_change
+                
 
-                    dx_offset = forward_component * forward_axis[0] + lateral_component * right_axis[0]
-                    dy_offset = forward_component * forward_axis[1] + lateral_component * right_axis[1]
+                # south <-> west
+                if direction == Direction.SOUTH and md == Direction.WEST:
+                    x_change, y_change = self.turn_offsets["forward_right"]
+                    new_x = x - x_change
+                    new_y = y - y_change
 
-                    target_direction = Direction((int(direction) + (2 if "right" in turn_type else -2)) % 8)
-                    if target_direction != md:
-                        continue
+                
+                if direction == Direction.WEST and md == Direction.SOUTH:
+                    x_change, y_change = self.turn_offsets["forward_left"]
+                    new_x = x - y_change
+                    new_y = y + x_change
+                
 
-                    next_x = x + dx_offset
-                    next_y = y + dy_offset
-
-                    if self.grid.reachable(next_x, next_y, turn=True) and self.grid.reachable(x, y, preTurn=True):
-                        safe_cost = self.get_safe_turn_cost(x, y)
-                        neighbors.append((next_x, next_y, md, safe_cost + 10))
-
-
+                # west <-> north
+                if direction == Direction.WEST and md == Direction.NORTH:
+                    x_change, y_change = self.turn_offsets["forward_right"]
+                    new_x = x - y_change
+                    new_y = y + x_change
+                
+                if direction == Direction.NORTH and md == Direction.WEST:
+                    x_change, y_change = self.turn_offsets["forward_left"]
+                    new_x = x + x_change
+                    new_y = y + y_change
+                
+                # Check for valid position
+                if self.grid.reachable(new_x, new_y, turn = True) and self.grid.reachable(x, y, preTurn = True):
+                    safe_cost = self.get_safe_turn_cost(x, y)
+                    neighbors.append((new_x, new_y, md, safe_cost))
         return neighbors
 
     def path_cost_generator(self, states: List[CellState]):

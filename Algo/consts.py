@@ -37,5 +37,28 @@ TURN_RADIUS = 1
 SAFE_COST = 1000 # the cost for the turn in case there is a chance that the robot is touch some obstacle
 SCREENSHOT_COST = 50 # the cost for the place where the picture is taken
 
+
+# 8, 4 (45 45 turn)
+# FL_OFFSET = (8, 4)
+# 30, 15 (90 turn)
+FL_OFFSET = (0, 5)
+
+# 5, 13 (45 45 turn)
+# FR_OFFSET = (5, 3)
+# (90 turn)
+FR_OFFSET = (0, 5)
+
+FW_SMALL_OFFSET = 2
+BW_SMALL_OFFSET = 2
+FW_OFFSET = 5
+BW_OFFSET = 4
+
+# no offset
+'''
 FL_OFFSET = (0, 0)
-FR_OFFSET = (3, 7)
+FR_OFFSET = (0, 0)
+
+FW_SMALL_OFFSET = 0
+FW_OFFSET = 0
+BW_OFFSET = 0
+'''

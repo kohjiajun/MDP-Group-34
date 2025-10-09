@@ -1,4 +1,4 @@
-from consts import WIDTH, HEIGHT, Direction, FL_OFFSET, FR_OFFSET
+from consts import WIDTH, HEIGHT, Direction, FL_OFFSET, FR_OFFSET, FW_OFFSET, BW_OFFSET, FW_SMALL_OFFSET, BW_SMALL_OFFSET
 
 
 def is_valid(center_x: int, center_y: int):
@@ -292,7 +292,8 @@ def command_generator(states, obstacles):
         
 
     # Final command is the stop command (FIN)
-    commands.append("FIN")  
+    commands.append("FIN") 
+    # print(commands) 
 
     # Compress commands if there are consecutive forward or backward commands
     compressed_commands = [commands[0]]
@@ -332,11 +333,12 @@ def command_generator(states, obstacles):
             # add turn command
             compressed_commands.append(commands[i])
 
-            # remove/add x offset after the turn
-            if 10 - FL_OFFSET[0] < 10:
-                compressed_commands.append("BW00{}".format(10 - FL_OFFSET[0]))
-            else:
-                compressed_commands.append("BW0{}".format(10 - FL_OFFSET[0]))
+            # remove/add x offset after the 
+            if FL_OFFSET[0] > 0:
+                if 10 - FL_OFFSET[0] < 10:
+                    compressed_commands.append("BW00{}".format(10 - FL_OFFSET[0]))
+                else:
+                    compressed_commands.append("BW0{}".format(10 - FL_OFFSET[0]))
 
             continue
 
@@ -351,17 +353,18 @@ def command_generator(states, obstacles):
             compressed_commands.append(commands[i])
 
             # remove/add x offset after the turn
-            if 10 - FR_OFFSET[0] < 10:
-                compressed_commands.append("FW00{}".format(10 - FR_OFFSET[0]))
-            else:
-                compressed_commands.append("FW0{}".format(10 - FR_OFFSET[0]))
+            if FR_OFFSET[0] > 0:
+                if 10 - FR_OFFSET[0] < 10:
+                    compressed_commands.append("FW00{}".format(10 - FR_OFFSET[0]))
+                else:
+                    compressed_commands.append("FW0{}".format(10 - FR_OFFSET[0]))
 
             continue
 
         # Otherwise, just add as usual
         compressed_commands.append(commands[i])
 
-    print(f"Compressed commands: {compressed_commands}")
+    # print(f"Compressed commands: {compressed_commands}")
     # Merge consecutive FW and BW commands
     merge_commands = [compressed_commands[0]]
 
@@ -445,5 +448,36 @@ def command_generator(states, obstacles):
         # Otherwise, just add as usual
         else:
             merge_commands.append(compressed_commands[i])
+
+    print(f"Merge commands: {merge_commands}")
+
+    # Account for forwards and backwards offset
+    for i in range(0, len(merge_commands)):
+        # If command is FW
+        if merge_commands[i].startswith("FW"):
+            # Get the number of steps
+            steps = int(merge_commands[i][2:])
+            if steps >= 10:
+                if steps - FW_OFFSET < 10:
+                    merge_commands[i] = "FW00{}".format(steps - FW_OFFSET)
+                elif steps - FW_OFFSET < 100:
+                    merge_commands[i] = "FW0{}".format(steps - FW_OFFSET)
+                else:
+                    merge_commands[i] = "FW{}".format(steps - FW_OFFSET)
+            elif steps >= 5:
+                merge_commands[i] = "FW00{}".format(steps - FW_SMALL_OFFSET)
+
+        elif merge_commands[i].startswith("BW"):
+            # Get the number of steps
+            steps = int(merge_commands[i][2:])
+            if steps >= 10:
+                if steps - BW_OFFSET < 10:
+                    merge_commands[i] = "BW00{}".format(steps - BW_OFFSET)
+                elif steps - BW_OFFSET < 100:
+                    merge_commands[i] = "BW0{}".format(steps - BW_OFFSET)
+                else:
+                    merge_commands[i] = "BW{}".format(steps - BW_OFFSET)
+            elif steps >= 5:
+                merge_commands[i] = "BW00{}".format(steps - BW_SMALL_OFFSET)
 
     return merge_commands
