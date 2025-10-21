@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -52,8 +53,6 @@ public class HomeFragment extends Fragment{
 
     private SharedPreferences sharedPreferences;
 
-    private SharedPreferences sharedPreferences;
-
     private View rootview;
 
     //For Arena
@@ -70,6 +69,7 @@ public class HomeFragment extends Fragment{
     //For Obstalce listview
     private ObstaclesListViewAdapter obstaclesListViewAdapter;
     private List<ObstacleListItem> obstacleListItemList;
+    private ListView obstacleListView;
 
     //Auxiliary
     private long timeStarted;
@@ -169,9 +169,10 @@ public class HomeFragment extends Fragment{
         }
 
         //For obstacle list view
-        ListView obstacleListView = (ListView)  rootview.findViewById(R.id.home_obstacles_listview);
+        obstacleListView = rootview.findViewById(R.id.home_obstacles_listview);
         obstaclesListViewAdapter = new ObstaclesListViewAdapter(getContext(), R.layout.home_obstacle_list_layout, obstacleListItemList);
         obstacleListView.setAdapter(obstaclesListViewAdapter);
+        refreshObstacleListHeight();
 
         //Theme toggle
         themeSwitch = rootview.findViewById(R.id.switch_theme);
@@ -631,6 +632,7 @@ public class HomeFragment extends Fragment{
                     obstacleListItemList.add(new ObstacleListItem(obj.getInt("no"), obj.getInt("x"),obj.getInt("y"),obj.getString("facing")));
                 }
                 obstaclesListViewAdapter.updateList(obstacleListItemList);
+                refreshObstacleListHeight();
             }catch (Exception ex){
                 Log.e(TAG, "onReceive: An error occured while updating obstacle list view");
                 ex.printStackTrace();
@@ -764,6 +766,38 @@ public class HomeFragment extends Fragment{
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(sendBTIntent);
     }
 
+    private void refreshObstacleListHeight() {
+        if (obstacleListView == null) {
+            return;
+        }
+
+        obstacleListView.post(() -> {
+            ListAdapter adapter = obstacleListView.getAdapter();
+            if (adapter == null) {
+                return;
+            }
+
+            int totalHeight = 0;
+            int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            for (int i = 0; i < adapter.getCount(); i++) {
+                View listItem = adapter.getView(i, null, obstacleListView);
+                listItem.measure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                totalHeight += listItem.getMeasuredHeight();
+            }
+
+            int dividerHeight = obstacleListView.getDividerHeight();
+            if (dividerHeight < 0) {
+                dividerHeight = 0;
+            }
+            totalHeight += dividerHeight * Math.max(adapter.getCount() - 1, 0);
+
+            ViewGroup.LayoutParams params = obstacleListView.getLayoutParams();
+            params.height = totalHeight;
+            obstacleListView.setLayoutParams(params);
+            obstacleListView.requestLayout();
+        });
+    }
+
     private class ObstaclesListViewAdapter extends ArrayAdapter<ObstacleListItem>{
         private List<ObstacleListItem> items;
 
@@ -785,14 +819,12 @@ public class HomeFragment extends Fragment{
             }
             ObstacleListItem item = items.get(position);
             TextView obsNoTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_obsNo);
-            TextView xPosTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_x);
-            TextView yPosTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_y);
+            TextView coordinatesTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_coordinates);
             TextView facingTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_dir);
 
             Locale locale = Locale.getDefault();
-            obsNoTxt.setText(String.format(locale, "#%02d", item.obsNo));
-            xPosTxt.setText(String.format(locale, "%02d", item.x));
-            yPosTxt.setText(String.format(locale, "%02d", item.y));
+            obsNoTxt.setText(String.format(locale, "Obstacle #%02d", item.obsNo));
+            coordinatesTxt.setText(String.format(locale, "Coordinates: (%02d, %02d)", item.x, item.y));
 
             String facingValue = item.facing == null || item.facing.trim().isEmpty()
                     ? "--"
