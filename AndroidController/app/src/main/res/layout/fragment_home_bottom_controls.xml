@@ -39,62 +39,73 @@
             <androidx.gridlayout.widget.GridLayout
                 android:id="@+id/manual_control_dpad"
                 android:layout_width="wrap_content"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:alignmentMode="alignMargins"
                 android:background="@drawable/bg_panel_surface"
-                android:padding="16dp">
+                android:columnCount="3"
+                android:padding="12dp"
+                android:rowCount="3"
+                android:useDefaultMargins="true">
 
                 <ImageButton
                     android:id="@+id/upArrowBtn"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:layout_centerHorizontal="true"
                     android:background="@drawable/bg_directional_button"
                     android:contentDescription="Up"
                     android:padding="12dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_arrow_up"
-                    android:tint="@color/neonCyan" />
+                    android:tint="@color/neonCyan"
+                    app:layout_column="1"
+                    app:layout_row="0" />
 
                 <ImageButton
                     android:id="@+id/leftArrowBtn"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
                     android:background="@drawable/bg_directional_button"
                     android:contentDescription="Left"
                     android:padding="12dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_arrow_left"
-                    android:tint="@color/neonCyan" />
+                    android:tint="@color/neonCyan"
+                    app:layout_column="0"
+                    app:layout_row="1" />
+
+                <Space
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:layout_column="1"
+                    app:layout_row="1" />
 
                 <ImageButton
                     android:id="@+id/rightArrowBtn"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_directional_button"
                     android:contentDescription="Right"
                     android:padding="12dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_arrow_right"
-                    android:tint="@color/neonCyan" />
+                    android:tint="@color/neonCyan"
+                    app:layout_column="2"
+                    app:layout_row="1" />
 
                 <ImageButton
                     android:id="@+id/downArrowBtn"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
                     android:background="@drawable/bg_directional_button"
                     android:contentDescription="Down"
                     android:padding="12dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_arrow_down"
-                    android:tint="@color/neonCyan" />
-            </RelativeLayout>
+                    android:tint="@color/neonCyan"
+                    app:layout_column="1"
+                    app:layout_row="2" />
+            </androidx.gridlayout.widget.GridLayout>
 
             <!-- Robot Info -->
             <LinearLayout
