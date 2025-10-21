@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment{
     private Switch manualModeSwitch;
     private Switch outdoorArenaSwitch;
     private Switch turningModeSwitch;
+
+    private SharedPreferences sharedPreferences;
 
     private View rootview;
 
@@ -101,6 +104,12 @@ public class HomeFragment extends Fragment{
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        sharedPreferences = context.getSharedPreferences(RobotControllerActions.PREFS_NAME, Context.MODE_PRIVATE);
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -137,6 +146,7 @@ public class HomeFragment extends Fragment{
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(updateObstalceListReceiver, new IntentFilter("newObstacleList"));
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(imageRecResultReceiver, new IntentFilter("imageResult"));
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(robotLocationUpdateReceiver, new IntentFilter("updateRobocarLocation"));
+            LocalBroadcastManager.getInstance(getContext()).registerReceiver(startFastestCarReceiver, new IntentFilter(RobotControllerActions.ACTION_START_FASTEST_CAR));
 
             initializedIntentListeners = true;
         }
@@ -163,6 +173,23 @@ public class HomeFragment extends Fragment{
         outdoorArenaSwitch = (Switch) rootview.findViewById(R.id.switch_outdoor);
         turningModeSwitch = (Switch) rootview.findViewById(R.id.switch_turnmode);
 
+        if(sharedPreferences == null && getContext() != null){
+            sharedPreferences = requireContext().getSharedPreferences(RobotControllerActions.PREFS_NAME, Context.MODE_PRIVATE);
+        }
+
+        boolean savedOutdoorArena = false;
+        boolean savedBigTurn = false;
+        if(sharedPreferences != null){
+            savedOutdoorArena = sharedPreferences.getBoolean(RobotControllerActions.PREF_OUTDOOR, false);
+            savedBigTurn = sharedPreferences.getBoolean(RobotControllerActions.PREF_BIG_TURN, false);
+        }
+
+        outdoorArenaSwitch.setChecked(savedOutdoorArena);
+        turningModeSwitch.setChecked(savedBigTurn);
+        if(gridMap != null){
+            gridMap.setIsOutdoorArena(savedOutdoorArena);
+        }
+
         manualModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -178,6 +205,18 @@ public class HomeFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 gridMap.setIsOutdoorArena(isChecked);
+                if(sharedPreferences != null){
+                    sharedPreferences.edit().putBoolean(RobotControllerActions.PREF_OUTDOOR, isChecked).apply();
+                }
+            }
+        });
+
+        turningModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(sharedPreferences != null){
+                    sharedPreferences.edit().putBoolean(RobotControllerActions.PREF_BIG_TURN, isChecked).apply();
+                }
             }
         });
 
@@ -289,25 +328,9 @@ public class HomeFragment extends Fragment{
         });
 
         btnSendStartFastestCar.setOnClickListener(v->{
-            txtTimeTaken.setVisibility(View.INVISIBLE);
-            timeStarted = System.nanoTime();
-
-            boolean isBigTurn = turningModeSwitch.isChecked();
-            boolean isOutdoor = outdoorArenaSwitch.isChecked();
-
-            if(isBigTurn){
-                if(isOutdoor){
-                    sendTurningModeCmdIntent("WN04");
-                }else{
-                    sendTurningModeCmdIntent("WN02");
-                }
-            }else{
-                if(isOutdoor){
-                    sendTurningModeCmdIntent("WN03");
-                }else{
-                    sendTurningModeCmdIntent("WN01");
-                }
-            }
+            boolean isBigTurn = turningModeSwitch != null && turningModeSwitch.isChecked();
+            boolean isOutdoor = outdoorArenaSwitch != null && outdoorArenaSwitch.isChecked();
+            startFastestCar(isBigTurn, isOutdoor);
         });
 
         btnResetArena.setOnClickListener(v->{
@@ -454,6 +477,46 @@ public class HomeFragment extends Fragment{
         return rootview;
     }
 
+    private void startFastestCar(boolean isBigTurn, boolean isOutdoor){
+        if(txtTimeTaken != null){
+            txtTimeTaken.setVisibility(View.INVISIBLE);
+        }
+        timeStarted = System.nanoTime();
+
+        if(sharedPreferences != null){
+            boolean storedBigTurn = sharedPreferences.getBoolean(RobotControllerActions.PREF_BIG_TURN, false);
+            boolean storedOutdoor = sharedPreferences.getBoolean(RobotControllerActions.PREF_OUTDOOR, false);
+            if(storedBigTurn != isBigTurn || storedOutdoor != isOutdoor){
+                sharedPreferences.edit()
+                        .putBoolean(RobotControllerActions.PREF_BIG_TURN, isBigTurn)
+                        .putBoolean(RobotControllerActions.PREF_OUTDOOR, isOutdoor)
+                        .apply();
+            }
+        }
+
+        if(turningModeSwitch != null && turningModeSwitch.isChecked() != isBigTurn){
+            turningModeSwitch.setChecked(isBigTurn);
+        }
+
+        if(outdoorArenaSwitch != null && outdoorArenaSwitch.isChecked() != isOutdoor){
+            outdoorArenaSwitch.setChecked(isOutdoor);
+        }
+
+        if(isBigTurn){
+            if(isOutdoor){
+                sendTurningModeCmdIntent("WN04");
+            }else{
+                sendTurningModeCmdIntent("WN02");
+            }
+        }else{
+            if(isOutdoor){
+                sendTurningModeCmdIntent("WN03");
+            }else{
+                sendTurningModeCmdIntent("WN01");
+            }
+        }
+    }
+
     private BroadcastReceiver roboStatusUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -530,6 +593,17 @@ public class HomeFragment extends Fragment{
                 Log.e(TAG, "onReceive: An error occured on receiving robocar mode");
                 ex.printStackTrace();
             }
+        }
+    };
+
+    private final BroadcastReceiver startFastestCarReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isBigTurn = intent.getBooleanExtra(RobotControllerActions.EXTRA_BIG_TURN,
+                    turningModeSwitch != null && turningModeSwitch.isChecked());
+            boolean isOutdoor = intent.getBooleanExtra(RobotControllerActions.EXTRA_OUTDOOR,
+                    outdoorArenaSwitch != null && outdoorArenaSwitch.isChecked());
+            startFastestCar(isBigTurn, isOutdoor);
         }
     };
 
