@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -788,10 +789,15 @@ public class HomeFragment extends Fragment{
             TextView yPosTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_y);
             TextView facingTxt = (TextView) convertView.findViewById(R.id.txtObsListItem_dir);
 
-            obsNoTxt.setText("#"+item.obsNo);
-            xPosTxt.setText(Integer.toString(item.x));
-            yPosTxt.setText(Integer.toString(item.y));
-            facingTxt.setText(item.facing);
+            Locale locale = Locale.getDefault();
+            obsNoTxt.setText(String.format(locale, "#%02d", item.obsNo));
+            xPosTxt.setText(String.format(locale, "%02d", item.x));
+            yPosTxt.setText(String.format(locale, "%02d", item.y));
+
+            String facingValue = item.facing == null || item.facing.trim().isEmpty()
+                    ? "--"
+                    : item.facing;
+            facingTxt.setText(facingValue.toUpperCase(locale));
 
             return convertView;
         }
