@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -46,6 +47,9 @@ public class HomeFragment extends Fragment{
     private Switch manualModeSwitch;
     private Switch outdoorArenaSwitch;
     private Switch turningModeSwitch;
+    private SwitchCompat themeSwitch;
+
+    private SharedPreferences sharedPreferences;
 
     private SharedPreferences sharedPreferences;
 
@@ -167,6 +171,14 @@ public class HomeFragment extends Fragment{
         ListView obstacleListView = (ListView)  rootview.findViewById(R.id.home_obstacles_listview);
         obstaclesListViewAdapter = new ObstaclesListViewAdapter(getContext(), R.layout.home_obstacle_list_layout, obstacleListItemList);
         obstacleListView.setAdapter(obstaclesListViewAdapter);
+
+        //Theme toggle
+        themeSwitch = rootview.findViewById(R.id.switch_theme);
+        if (themeSwitch != null) {
+            boolean isDarkMode = ThemeUtils.isDarkModeEnabled(requireContext());
+            themeSwitch.setChecked(isDarkMode);
+            themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> ThemeUtils.setDarkMode(requireContext(), isChecked));
+        }
 
         //Switches
         manualModeSwitch = (Switch) rootview.findViewById(R.id.switch_manualMode);
