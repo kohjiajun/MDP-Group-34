@@ -52,6 +52,8 @@ public class HomeFragment extends Fragment{
 
     private SharedPreferences sharedPreferences;
 
+    private SharedPreferences sharedPreferences;
+
     private View rootview;
 
     //For Arena
@@ -486,14 +488,6 @@ public class HomeFragment extends Fragment{
          */
         // Inflate the layout for this fragment
         return rootview;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (themeSwitch != null) {
-            themeSwitch.setChecked(ThemeUtils.isDarkModeEnabled(requireContext()));
-        }
     }
 
     private void startFastestCar(boolean isBigTurn, boolean isOutdoor){
