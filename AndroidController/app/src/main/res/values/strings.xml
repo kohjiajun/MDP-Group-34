@@ -11,4 +11,6 @@
 <!--    <string name="update_y_coordinate">Y:%i </string>-->
 
     <string name="configure">Reconfigure</string>
+    <string name="theme_switch_dark">Dark Mode</string>
+    <string name="theme_switch_light">Light Mode</string>
 </resources>
